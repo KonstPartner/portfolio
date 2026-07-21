@@ -2,6 +2,10 @@
 
 A one-page Astro portfolio with anchor navigation, light/dark/system themes, theme-aware screenshots, responsive galleries, a portrait hero, and a short opening animation.
 
+## Live Demo
+
+> [konstpartner.github.io/portfolio/](https://konstpartner.github.io/portfolio/)
+
 ## Run locally
 
 ```bash
