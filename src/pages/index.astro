@@ -1,0 +1,436 @@
+---
+import ContactCard from '../components/ContactCard.astro';
+import FeaturedProject from '../components/FeaturedProject.astro';
+import Icon from '../components/Icon.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SectionDecor from '../components/SectionDecor.astro';
+import SectionRail from '../components/SectionRail.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { contacts, education, experience, projects } from '../data/portfolio';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeShowcase from '../components/CodeShowcase.astro';
+import { ASSETS } from '../config/assets';
+
+const featuredProjects = projects.filter((project) => project.featured);
+const otherProjects = projects.filter((project) => !project.featured);
+
+const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
+  const duration = 18 + (laneIndex % 7) * 0.9;
+  const text = Array.from({ length: 190 }, (_, rowIndex) =>
+    (laneIndex * 7 + rowIndex * 11 + laneIndex * rowIndex) % 5 < 2 ? '1' : '0'
+  ).join('');
+
+  return Array.from({ length: 3 }, (_, streamIndex) => ({
+    text,
+    x: 1.5 + laneIndex * (97 / 41),
+    delay: -(duration * ((streamIndex / 3 + laneIndex * 0.071) % 1)),
+    duration,
+  }));
+}).flat();
+---
+
+<BaseLayout
+  title="Konstantin — Frontend Developer"
+  description="Frontend developer portfolio with React, React Native, Next.js, TypeScript, and product-focused web and mobile projects."
+>
+  <div class="intro-screen" data-intro-screen aria-hidden="true">
+    <div class="intro-screen__grid"></div>
+    <div class="intro-screen__binary">
+      {
+        binaryStreams.map((stream, index) => (
+          <span
+            style={`--binary-x:${stream.x}%;--binary-delay:${stream.delay}s;--binary-duration:${stream.duration}s;`}
+            data-stream={index}
+          >
+            {stream.text.split('').join('\n')}
+          </span>
+        ))
+      }
+    </div>
+    <div class="intro-screen__content">
+      <span>Portfolio</span>
+      <strong>Konstantin</strong>
+      <i></i>
+      <small>Frontend Developer</small>
+    </div>
+  </div>
+
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" data-site-header>
+    <div class="container site-header__inner">
+      <a class="brand" href="#top" aria-label="Back to top">
+        <span class="brand__mark">K</span>
+        <span class="brand__text">Konstantin</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contacts">Contacts</a>
+        <a href="#experience">Experience</a>
+        <a href="#education">Education</a>
+      </nav>
+
+      <div class="site-header__actions">
+        <ThemeToggle />
+        <button
+          aria-expanded="false"
+          aria-label="Open navigation"
+          class="menu-button"
+          data-menu-toggle
+          type="button"
+        >
+          <Icon name="menu" size={21} />
+        </button>
+      </div>
+    </div>
+
+    <nav class="mobile-nav" data-mobile-nav aria-label="Mobile navigation">
+      <div>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contacts">Contacts</a>
+        <a href="#experience">Experience</a>
+        <a href="#education">Education</a>
+      </div>
+    </nav>
+  </header>
+
+  <SectionRail />
+
+  <main id="top">
+    <section
+      class="hero container reveal-group"
+      aria-labelledby="hero-title"
+      data-reveal-group
+    >
+      <SectionDecor variant="hero" />
+      <div class="hero__copy">
+        <p class="hero__kicker reveal-item">
+          <span></span>
+          Frontend developer · Web and mobile
+        </p>
+
+        <h1 id="hero-title" class="reveal-item">
+          React, React Native,
+          <em>Next.js and TypeScript.</em>
+        </h1>
+
+        <p class="hero__lead reveal-item">
+          I develop web and cross-platform applications, build frontend
+          architecture, integrate APIs, and turn product requirements into
+          working interfaces.
+        </p>
+
+        <div class="hero__actions reveal-item">
+          <a class="button button--primary" href="#projects">
+            View projects
+            <Icon name="arrow" size={18} />
+          </a>
+          <a class="button button--secondary" href="#contacts">Contacts</a>
+        </div>
+      </div>
+
+      <div class="hero__visual reveal-item" aria-label="Portrait of Konstantin">
+        <div class="portrait-orbit portrait-orbit--one" aria-hidden="true">
+          <span class="portrait-orbit__react">
+            <span class="portrait-orbit__react-spin">
+              <Icon name="react" size={38} />
+            </span>
+          </span>
+        </div>
+
+        <div class="portrait-orbit portrait-orbit--two" aria-hidden="true">
+        </div>
+        <div class="portrait-glow" aria-hidden="true"></div>
+        <div class="portrait-card">
+          <img
+            alt="Konstantin"
+            decoding="async"
+            fetchpriority="high"
+            height="605"
+            src={ASSETS.profile.konstantin}
+            width="519"
+          />
+          <div class="portrait-card__caption">
+            <span>Konstantin</span>
+            <small>Frontend Developer</small>
+          </div>
+        </div>
+        <span class="floating-label floating-label--react">React</span>
+        <span class="floating-label floating-label--native">React Native</span>
+        <span class="floating-label floating-label--next">Next.js</span>
+        <span class="floating-label floating-label--ts">TypeScript</span>
+      </div>
+    </section>
+
+    <section
+      class="section section--about reveal-group"
+      aria-labelledby="about-title"
+      data-reveal-group
+    >
+      <SectionDecor variant="about" />
+      <div class="container section-grid">
+        <div class="section-heading reveal-item">
+          <p class="section-index section-anchor" id="about">01 / About</p>
+
+          <h2 id="about-title">About me</h2>
+
+          <CodeShowcase />
+        </div>
+
+        <div class="about-copy reveal-item">
+          <p class="about-copy__lead">
+            Frontend developer with experience in web and mobile application
+            development using React, React Native, Next.js, and TypeScript.
+          </p>
+          <p>
+            Participated in designing and launching products from scratch,
+            setting up frontend environments, and integrating REST APIs and
+            Firebase.
+          </p>
+          <p>
+            I design applications with clear separation of responsibilities
+            between modules, reusable components, and predictable state
+            management. I account for further product growth, changing
+            requirements, and long-term maintainability of the codebase.
+          </p>
+          <p>
+            I use AI tools to accelerate design, development, and testing, meet
+            deadlines, communicate risks on time, and keep collaboration
+            transparent. I am focused on continuous professional growth and on
+            contributing to the company’s success.
+          </p>
+
+          <div class="about-stats">
+            <article class="skill-card skill-card--frontend">
+              <span class="skill-card__icon"
+                ><Icon name="react" size={20} /></span
+              >
+              <strong>Frontend</strong>
+              <span>React, Next.js, React Native, Expo</span>
+            </article>
+            <article class="skill-card skill-card--data">
+              <span class="skill-card__icon"
+                ><Icon name="database" size={20} /></span
+              >
+              <strong>Data</strong>
+              <span>REST API, Firebase, TanStack Query, Redux, Zustand</span>
+            </article>
+            <article class="skill-card skill-card--backend">
+              <span class="skill-card__icon"
+                ><Icon name="nodejs" size={20} /></span
+              >
+              <strong>Backend experience</strong>
+              <span>Node.js, Express, PostgreSQL, Redis, Docker</span>
+            </article>
+          </div>
+
+          <div class="about-meta">
+            <div>
+              <strong>Soft skills</strong>
+              <span>Teamwork, communication, stress resistance</span>
+            </div>
+            <div>
+              <strong>Languages</strong>
+              <span>Russian — native · English — B2 (Upper-Intermediate)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--projects" aria-labelledby="projects-title">
+      <SectionDecor variant="projects" />
+      <div class="container">
+        <div
+          class="section-heading section-heading--row reveal-item reveal-group"
+          data-reveal-group
+        >
+          <div>
+            <p class="section-index section-anchor" id="projects">
+              02 / Projects
+            </p>
+            <h2 id="projects-title">Projects</h2>
+          </div>
+        </div>
+
+        <div class="featured-projects">
+          {
+            featuredProjects.map((project, index) => (
+              <FeaturedProject index={index} project={project} />
+            ))
+          }
+        </div>
+
+        <div class="other-projects-block reveal-group" data-reveal-group>
+          <div class="other-projects-heading reveal-item">
+            <p class="eyebrow">Other projects</p>
+            <h3>Web applications and interface work</h3>
+          </div>
+
+          <div class="projects-grid">
+            {
+              otherProjects.map((project, index) => (
+                <ProjectCard
+                  index={index + featuredProjects.length}
+                  project={project}
+                />
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="section section--contacts reveal-group"
+      aria-labelledby="contacts-title"
+      data-reveal-group
+    >
+      <SectionDecor variant="contacts" />
+      <div class="container">
+        <div
+          class="section-heading section-heading--row reveal-item reveal-group"
+          data-reveal-group
+        >
+          <div>
+            <p class="section-index section-anchor" id="contacts">
+              03 / Contacts
+            </p>
+            <h2 id="contacts-title">Contacts</h2>
+          </div>
+        </div>
+
+        <div class="contacts-grid">
+          {contacts.map((contact) => <ContactCard contact={contact} />)}
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="section section--experience reveal-group"
+      aria-labelledby="experience-title"
+      data-reveal-group
+    >
+      <SectionDecor variant="experience" />
+      <div class="container">
+        <div class="section-heading section-heading--row reveal-item">
+          <div>
+            <p class="section-index section-anchor" id="experience">
+              04 / Experience
+            </p>
+            <h2 id="experience-title">Experience</h2>
+          </div>
+        </div>
+
+        <article class="experience-card reveal-item">
+          <div class="experience-card__media">
+            <img
+              alt="Innowise logo"
+              class="experience-card__image"
+              decoding="async"
+              loading="lazy"
+              src={experience.image}
+            />
+          </div>
+
+          <div class="experience-card__main">
+            <div class="experience-card__header">
+              <div>
+                <p class="eyebrow">
+                  {experience.company} · {experience.location}
+                </p>
+                <h3>{experience.role}</h3>
+              </div>
+              <span>{experience.period}</span>
+            </div>
+            <p class="experience-card__summary">{experience.summary}</p>
+            <ul class="experience-card__list">
+              {experience.points.map((point: string) => <li>{point}</li>)}
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section
+      class="section section--education reveal-group"
+      aria-labelledby="education-title"
+      data-reveal-group
+    >
+      <SectionDecor variant="education" />
+      <div class="container">
+        <div class="section-heading section-heading--row reveal-item">
+          <div>
+            <p class="section-index section-anchor" id="education">
+              05 / Education
+            </p>
+            <h2 id="education-title">Education</h2>
+          </div>
+        </div>
+
+        <article class="education-card reveal-item">
+          <div class="education-card__media">
+            <img
+              alt="International University MITSO"
+              class="education-card__image"
+              decoding="async"
+              loading="lazy"
+              src={education.image}
+            />
+            <span class="education-card__media-badge">
+              <Icon name="graduation" size={20} />
+              {education.period}
+            </span>
+          </div>
+
+          <div class="education-card__main">
+            <div class="education-card__header">
+              <div>
+                <p class="eyebrow">Bachelor’s degree</p>
+                <h3>{education.university}</h3>
+              </div>
+              <span>{education.grade}</span>
+            </div>
+            <p class="education-card__degree">{education.specialization}</p>
+            <p>{education.description}</p>
+            <p>{education.activities}</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div>
+        <span class="brand__mark">K</span>
+        <p>Konstantin · Frontend Developer</p>
+      </div>
+      <a href="#top">
+        Back to top
+        <Icon name="arrow" size={18} />
+      </a>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" data-lightbox-dialog>
+    <button
+      aria-label="Close enlarged image"
+      class="icon-button lightbox__close"
+      data-lightbox-close
+      type="button"
+    >
+      <Icon name="close" size={24} />
+    </button>
+    <div class="lightbox__stage">
+      <div class="lightbox__media">
+        <img alt="" data-lightbox-image src="" />
+      </div>
+    </div>
+  </dialog>
+
+  <script src="../scripts/main.ts"></script>
+</BaseLayout>

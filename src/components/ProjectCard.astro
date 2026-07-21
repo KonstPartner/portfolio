@@ -1,0 +1,39 @@
+---
+import type { Project } from '../data/portfolio';
+import ProjectLinks from './ProjectLinks.astro';
+import ThemeImage from './ThemeImage.astro';
+
+type Props = {
+  project: Project;
+  index: number;
+};
+
+const { project, index } = Astro.props;
+---
+
+<article class="project-card reveal-item">
+  <div class="project-card__media">
+    <div class="project-card__image-wrap">
+      <ThemeImage className="project-card__image" image={project.images[0]} />
+      <span class="project-card__index"
+        >{String(index + 1).padStart(2, '0')}</span
+      >
+    </div>
+  </div>
+
+  <div class="project-card__content">
+    <p class="eyebrow">{project.eyebrow}</p>
+    <h3>{project.title}</h3>
+    <p>{project.summary}</p>
+
+    <ul class="project-card__work">
+      {project.contribution.map((item) => <li>{item}</li>)}
+    </ul>
+
+    <ul class="technology-list technology-list--compact">
+      {project.technologies.map((technology) => <li>{technology}</li>)}
+    </ul>
+
+    <ProjectLinks links={project.links} />
+  </div>
+</article>

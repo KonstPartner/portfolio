@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+
+const stations = [
+  { id: 'top', label: 'Start' },
+  { id: 'about', label: 'About' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'contacts', label: 'Contacts' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'education', label: 'Education' },
+];
+---
+
+<aside class="section-rail" data-section-rail aria-label="Page sections">
+  <div class="section-rail__track" data-section-rail-track>
+    <span class="section-rail__progress" data-section-rail-progress></span>
+
+    {
+      stations.map((station, index) => (
+        <a
+          aria-label={`Go to ${station.label}`}
+          class="section-rail__station"
+          data-section-rail-station
+          data-section-target={station.id}
+          href={`#${station.id}`}
+          style={`--station:${index / (stations.length - 1)}`}
+        >
+          <span />
+          <small>{station.label}</small>
+        </a>
+      ))
+    }
+
+    <button
+      aria-label="Drag to move between page sections or click to return to the top"
+      class="section-rail__handle"
+      data-section-rail-handle
+      type="button"
+    >
+      <Icon name="move-vertical" size={18} />
+    </button>
+  </div>
+</aside>

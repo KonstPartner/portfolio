@@ -1,0 +1,168 @@
+---
+import {
+  ArrowRight,
+  Binary,
+  BookOpen,
+  Braces,
+  Code,
+  Database,
+  ExternalLink,
+  GitBranch,
+  Globe,
+  GraduationCap,
+  Layers,
+  Lightbulb,
+  Link2,
+  Mail,
+  Menu,
+  MessageCircleMore,
+  Monitor,
+  Moon,
+  MoveVertical,
+  Phone,
+  Send,
+  Smartphone,
+  Sun,
+  SquareTerminal,
+  Trophy,
+  Users,
+  X,
+} from '@lucide/astro';
+import {
+  faGithub,
+  faGitlab,
+  faLinkedin,
+  faTelegram,
+  type IconDefinition,
+} from '@fortawesome/free-brands-svg-icons';
+import {
+  siApollographql,
+  siCss,
+  siDocker,
+  siExpo,
+  siExpress,
+  siFirebase,
+  siGit,
+  siGraphql,
+  siHtml5,
+  siJavascript,
+  siJest,
+  siNextdotjs,
+  siNodedotjs,
+  siPostgresql,
+  siReact,
+  siReactquery,
+  siReactrouter,
+  siRedis,
+  siRedux,
+  siSass,
+  siTailwindcss,
+  siTypescript,
+  siVite,
+  type SimpleIcon,
+} from 'simple-icons';
+
+import type { IconName } from '../types/icons';
+
+type Props = {
+  name: IconName;
+  size?: number;
+};
+
+const { name, size = 20 } = Astro.props;
+
+const lucideIcons = {
+  arrow: ArrowRight,
+  binary: Binary,
+  book: BookOpen,
+  braces: Braces,
+  close: X,
+  code: Code,
+  database: Database,
+  external: ExternalLink,
+  'git-branch': GitBranch,
+  globe: Globe,
+  graduation: GraduationCap,
+  layers: Layers,
+  lightbulb: Lightbulb,
+  link: Link2,
+  mail: Mail,
+  menu: Menu,
+  message: MessageCircleMore,
+  monitor: Monitor,
+  moon: Moon,
+  'move-vertical': MoveVertical,
+  phone: Phone,
+  send: Send,
+  smartphone: Smartphone,
+  sun: Sun,
+  terminal: SquareTerminal,
+  trophy: Trophy,
+  users: Users,
+} as const;
+
+const brandIcons: Partial<Record<IconName, IconDefinition>> = {
+  github: faGithub,
+  gitlab: faGitlab,
+  linkedin: faLinkedin,
+  telegram: faTelegram,
+};
+
+const simpleIcons: Partial<Record<IconName, SimpleIcon>> = {
+  apollo: siApollographql,
+  css3: siCss,
+  docker: siDocker,
+  expo: siExpo,
+  express: siExpress,
+  firebase: siFirebase,
+  git: siGit,
+  graphql: siGraphql,
+  html5: siHtml5,
+  javascript: siJavascript,
+  jest: siJest,
+  nextjs: siNextdotjs,
+  nodejs: siNodedotjs,
+  postgresql: siPostgresql,
+  react: siReact,
+  'react-query': siReactquery,
+  'react-router': siReactrouter,
+  redis: siRedis,
+  redux: siRedux,
+  sass: siSass,
+  tailwind: siTailwindcss,
+  typescript: siTypescript,
+  vite: siVite,
+};
+
+const LucideIcon = lucideIcons[name as keyof typeof lucideIcons];
+const brandIcon = brandIcons[name];
+const simpleIcon = simpleIcons[name];
+---
+
+{
+  LucideIcon ? (
+    <LucideIcon aria-hidden="true" size={size} stroke-width={1.8} />
+  ) : brandIcon ? (
+    <svg
+      aria-hidden="true"
+      class="icon"
+      height={size}
+      viewBox={`0 0 ${brandIcon.icon[0]} ${brandIcon.icon[1]}`}
+      width={size}
+    >
+      <path d={brandIcon.icon[4] as string} fill="currentColor" />
+    </svg>
+  ) : simpleIcon ? (
+    <svg
+      aria-hidden="true"
+      class="icon"
+      height={size}
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      <path d={simpleIcon.path} fill="currentColor" />
+    </svg>
+  ) : (
+    <Send aria-hidden="true" size={size} stroke-width={1.8} />
+  )
+}

@@ -1,0 +1,628 @@
+---
+const presets = [
+  `type Project = {
+  name: string;
+  stack: string[];
+  featured: boolean;
+};
+
+const portfolio: Project = {
+  name: 'Localize',
+  stack: ['React Native', 'Expo', 'TypeScript'],
+  featured: true,
+};`,
+
+  `const useProjects = () => {
+  return useQuery({
+    queryKey: ['projects'],
+    queryFn: projectsApi.getAll,
+    staleTime: 60_000,
+  });
+};`,
+
+  `export default function HomePage() {
+  return (
+    <main>
+      <Hero />
+      <Projects />
+      <Experience />
+      <Contacts />
+    </main>
+  );
+}`,
+
+  `const useThemeStore = create<ThemeState>((set) => ({
+  mode: 'system',
+
+  setMode: (mode) => {
+    set({ mode });
+  },
+}));`,
+
+  `const response = await fetch('/api/projects', {
+  headers: {
+    Authorization: \`Bearer \${token}\`,
+  },
+});
+
+const projects = await response.json();`,
+
+  `export const projectSchema = z.object({
+  title: z.string().min(1),
+  description: z.string(),
+  technologies: z.array(z.string()),
+  previewUrl: z.string().url().optional(),
+});`,
+
+  `const app = express();
+
+app.use(express.json());
+app.use('/api/projects', projectsRouter);
+
+app.listen(PORT, () => {
+  console.log(\`Server started on \${PORT}\`);
+});`,
+
+  `export async function getProjects() {
+  const snapshot = await getDocs(
+    collection(database, 'projects')
+  );
+
+  return snapshot.docs.map((document) => ({
+    id: document.id,
+    ...document.data(),
+  }));
+}`,
+
+  `const ProjectCard = ({ project }: Props) => (
+  <article className="project-card">
+    <img
+      src={project.image}
+      alt={project.title}
+    />
+    <h3>{project.title}</h3>
+  </article>
+);`,
+
+  `describe('ProjectCard', () => {
+  it('renders the project title', () => {
+    render(<ProjectCard project={project} />);
+
+    expect(
+      screen.getByText(project.title)
+    ).toBeInTheDocument();
+  });
+});`,
+
+  `const routes = {
+  home: '/',
+  projects: '/projects',
+  project: (slug: string) => \`/projects/\${slug}\`,
+} as const;`,
+
+  `export async function createProject(
+  payload: CreateProjectPayload
+): Promise<Project> {
+  const response = await api.post('/projects', payload);
+
+  return response.data;
+}`,
+
+  `const technologies = [
+  'React',
+  'Next.js',
+  'React Native',
+  'TypeScript',
+  'Firebase',
+  'PostgreSQL',
+];
+
+technologies.forEach(console.log);`,
+
+  `export const metadata = {
+  title: 'Konstantin — Frontend Developer',
+  description:
+    'React, React Native, Next.js and TypeScript',
+};`,
+
+  `src/
+├── entities/
+├── features/
+├── pages/
+├── shared/
+└── widgets/
+
+export const architecture = 'Feature-Sliced Design';`,
+];
+
+const presetsJson = JSON.stringify(presets);
+---
+
+<div
+  class="code-showcase"
+  data-code-showcase
+  data-presets={presetsJson}
+  aria-label="Animated code examples"
+>
+  <div class="code-showcase__header">
+    <div class="code-showcase__controls" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <span class="code-showcase__filename" data-code-filename> project.ts </span>
+
+    <span class="code-showcase__status"> TypeScript </span>
+  </div>
+
+  <div class="code-showcase__body">
+    <div class="code-showcase__numbers" data-code-lines aria-hidden="true">
+      1
+    </div>
+
+    <pre
+      class="code-showcase__pre"
+      aria-live="off"><code data-code-output /><span class="code-showcase__cursor" aria-hidden="true" /></pre>
+  </div>
+</div>
+
+<script>
+  const initializeCodeShowcase = () => {
+    const root = document.querySelector<HTMLElement>('[data-code-showcase]');
+
+    if (!root || root.dataset.initialized === 'true') {
+      return;
+    }
+
+    root.dataset.initialized = 'true';
+
+    const output = root.querySelector<HTMLElement>('[data-code-output]');
+    const lines = root.querySelector<HTMLElement>('[data-code-lines]');
+    const filename = root.querySelector<HTMLElement>('[data-code-filename]');
+
+    if (!output || !lines || !filename) {
+      return;
+    }
+
+    const rawPresets = root.dataset.presets;
+
+    if (!rawPresets) {
+      return;
+    }
+
+    const presets = JSON.parse(rawPresets) as string[];
+
+    const filenames = [
+      'project.ts',
+      'useProjects.ts',
+      'page.tsx',
+      'themeStore.ts',
+      'api.ts',
+      'schema.ts',
+      'server.ts',
+      'firebase.ts',
+      'ProjectCard.tsx',
+      'ProjectCard.test.tsx',
+      'routes.ts',
+      'createProject.ts',
+      'technologies.ts',
+      'metadata.ts',
+      'architecture.ts',
+    ];
+
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    let currentPresetIndex = -1;
+    let currentText = '';
+    let characterIndex = 0;
+    let isDeleting = false;
+    let timeoutId: number | undefined;
+
+    const escapeHtml = (value: string) =>
+      value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;');
+
+    const highlightCode = (value: string) => {
+      let highlighted = escapeHtml(value);
+
+      highlighted = highlighted.replace(
+        /(\/\/.*)$/gm,
+        '<span class="token token--comment">$1</span>'
+      );
+
+      highlighted = highlighted.replace(
+        /(`[^`]*`|'[^']*'|"[^"]*")/g,
+        '<span class="token token--string">$1</span>'
+      );
+
+      highlighted = highlighted.replace(
+        /\b(const|let|type|interface|return|export|default|async|await|function|if|else|new|as|from|import|describe|it)\b/g,
+        '<span class="token token--keyword">$1</span>'
+      );
+
+      highlighted = highlighted.replace(
+        /\b(true|false|null|undefined)\b/g,
+        '<span class="token token--literal">$1</span>'
+      );
+
+      highlighted = highlighted.replace(
+        /\b(\d[\d_]*)\b/g,
+        '<span class="token token--number">$1</span>'
+      );
+
+      return highlighted;
+    };
+
+    const updateLineNumbers = (value: string) => {
+      const count = Math.max(1, value.split('\n').length);
+
+      lines.textContent = Array.from({ length: count }, (_, index) =>
+        String(index + 1)
+      ).join('\n');
+    };
+
+    const render = () => {
+      output.innerHTML = highlightCode(currentText);
+      updateLineNumbers(currentText);
+    };
+
+    const getNextPresetIndex = () => {
+      if (presets.length <= 1) {
+        return 0;
+      }
+
+      let nextIndex = currentPresetIndex;
+
+      while (nextIndex === currentPresetIndex) {
+        nextIndex = Math.floor(Math.random() * presets.length);
+      }
+
+      return nextIndex;
+    };
+
+    const selectNextPreset = () => {
+      currentPresetIndex = getNextPresetIndex();
+      characterIndex = 0;
+      currentText = '';
+      isDeleting = false;
+      filename.textContent = filenames[currentPresetIndex] ?? 'project.ts';
+
+      render();
+    };
+
+    const schedule = (callback: () => void, delay: number) => {
+      window.clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(callback, delay);
+    };
+
+    const tick = () => {
+      const preset = presets[currentPresetIndex];
+
+      if (!preset) {
+        return;
+      }
+
+      if (!isDeleting) {
+        if (characterIndex < preset.length) {
+          characterIndex += 1;
+          currentText = preset.slice(0, characterIndex);
+          render();
+
+          const currentCharacter = preset[characterIndex - 1];
+
+          const delay =
+            currentCharacter === '\n'
+              ? 170
+              : currentCharacter === ' '
+                ? 18
+                : 34 + Math.random() * 38;
+
+          schedule(tick, delay);
+          return;
+        }
+
+        schedule(() => {
+          isDeleting = true;
+          tick();
+        }, 3200);
+
+        return;
+      }
+
+      if (characterIndex > 0) {
+        const removedCharacter = preset[characterIndex - 1];
+
+        characterIndex -= 1;
+        currentText = preset.slice(0, characterIndex);
+        render();
+
+        schedule(tick, removedCharacter === '\n' ? 38 : 8);
+
+        return;
+      }
+
+      selectNextPreset();
+      schedule(tick, 450);
+    };
+
+    selectNextPreset();
+
+    if (reducedMotion) {
+      currentText = presets[currentPresetIndex] ?? '';
+      render();
+      return;
+    }
+
+    schedule(tick, 600);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        window.clearTimeout(timeoutId);
+        return;
+      }
+
+      schedule(tick, 300);
+    });
+  };
+
+  initializeCodeShowcase();
+</script>
+
+<style>
+  .code-showcase {
+    position: relative;
+    width: 100%;
+    min-height: 390px;
+    margin-top: 32px;
+    overflow: hidden;
+
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+    border-radius: 22px;
+
+    background: #111827;
+
+    box-shadow:
+      0 24px 60px rgb(0 0 0 / 18%),
+      0 0 0 1px rgb(255 255 255 / 4%),
+      inset 0 1px 0 rgb(255 255 255 / 6%);
+
+    isolation: isolate;
+  }
+
+  .code-showcase__filename {
+    color: #e5e7eb;
+  }
+
+  .code-showcase__status {
+    color: #94a3b8;
+  }
+
+  .code-showcase__pre {
+    color: #e5e7eb;
+  }
+
+  .code-showcase__numbers {
+    border-right-color: rgb(255 255 255 / 8%);
+    color: #64748b;
+  }
+  .code-showcase::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    background:
+      radial-gradient(circle at 8% 0%, rgb(249 115 22 / 12%), transparent 34%),
+      radial-gradient(
+        circle at 100% 100%,
+        rgb(139 92 246 / 14%),
+        transparent 38%
+      );
+
+    content: '';
+    pointer-events: none;
+  }
+
+  .code-showcase__header {
+    min-height: 54px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 0 18px;
+
+    border-bottom: 1px solid rgb(255 255 255 / 9%);
+    background: #0b1220;
+  }
+
+  .code-showcase__controls {
+    display: flex;
+    gap: 7px;
+  }
+
+  .code-showcase__controls span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .code-showcase__controls span:nth-child(1) {
+    background: #ff5f57;
+  }
+
+  .code-showcase__controls span:nth-child(2) {
+    background: #febc2e;
+  }
+
+  .code-showcase__controls span:nth-child(3) {
+    background: #28c840;
+  }
+
+  .code-showcase__filename {
+    overflow: hidden;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .code-showcase__status {
+    justify-self: end;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .code-showcase__body {
+    height: 334px;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    overflow: auto;
+    padding: 20px 0 22px;
+  }
+
+  .code-showcase__numbers {
+    padding-right: 12px;
+    border-right: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+    color: color-mix(in srgb, var(--muted) 55%, transparent);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.65;
+    text-align: right;
+    user-select: none;
+    white-space: pre;
+  }
+
+  .code-showcase__pre {
+    min-width: max-content;
+    margin: 0;
+    padding: 0 22px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.65;
+    tab-size: 2;
+    white-space: pre;
+  }
+
+  .code-showcase__cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1.15em;
+    margin-left: 2px;
+    background: var(--accent);
+    vertical-align: -0.18em;
+    animation: code-cursor-blink 900ms steps(1) infinite;
+  }
+
+  .code-showcase {
+    background: var(--code-background);
+  }
+
+  .code-showcase__header {
+    background: var(--code-header);
+  }
+
+  .code-showcase__pre,
+  .code-showcase__filename {
+    color: var(--code-text);
+  }
+
+  .code-showcase__status,
+  .code-showcase__numbers {
+    color: var(--code-muted);
+  }
+
+  .code-showcase :global(.token--comment) {
+    color: #7c8494;
+  }
+
+  .code-showcase :global(.token--string) {
+    color: #73c991;
+  }
+
+  .code-showcase :global(.token--keyword) {
+    color: #c792ea;
+  }
+
+  .code-showcase :global(.token--literal) {
+    color: #ff9d76;
+  }
+
+  .code-showcase :global(.token--number) {
+    color: #f2cc60;
+  }
+
+  @keyframes code-cursor-blink {
+    0%,
+    45% {
+      opacity: 1;
+    }
+
+    46%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .code-showcase {
+      min-height: 360px;
+    }
+
+    .code-showcase__body {
+      height: 304px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .code-showcase {
+      min-height: 330px;
+      border-radius: 18px;
+    }
+
+    .code-showcase__header {
+      grid-template-columns: auto minmax(0, 1fr);
+      padding-inline: 14px;
+    }
+
+    .code-showcase__filename {
+      justify-self: end;
+    }
+
+    .code-showcase__status {
+      display: none;
+    }
+
+    .code-showcase__body {
+      height: 276px;
+      grid-template-columns: 34px minmax(0, 1fr);
+      padding-top: 16px;
+    }
+
+    .code-showcase__numbers {
+      padding-right: 9px;
+      font-size: 11px;
+    }
+
+    .code-showcase__pre {
+      padding-inline: 14px;
+      font-size: 11px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .code-showcase__cursor {
+      animation: none;
+    }
+  }
+</style>

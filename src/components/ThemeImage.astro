@@ -1,0 +1,22 @@
+---
+import type { ProjectImage } from '../data/portfolio';
+
+type Props = {
+  image: ProjectImage;
+  className?: string;
+  eager?: boolean;
+};
+
+const { image, className, eager = false } = Astro.props;
+---
+
+<img
+  alt={image.alt}
+  class={className}
+  data-dark-src={image.dark}
+  data-light-src={image.light}
+  data-theme-image
+  decoding="async"
+  loading={eager ? 'eager' : 'lazy'}
+  src={image.light}
+/>

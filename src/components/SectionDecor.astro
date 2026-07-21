@@ -1,0 +1,532 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from '../types/icons';
+
+type Variant =
+  'hero' | 'about' | 'contacts' | 'projects' | 'experience' | 'education';
+
+type DecorItem = {
+  icon: IconName;
+  x: number;
+  y: number;
+  size: number;
+  delay: number;
+  duration: number;
+  rotate: number;
+  pair?: number;
+};
+
+const { variant } = Astro.props as {
+  variant: Variant;
+};
+
+const projectTechnologyIcons: IconName[] = [
+  'react',
+  'typescript',
+  'redux',
+  'nextjs',
+  'smartphone',
+  'react-query',
+  'react-router',
+  'nodejs',
+  'layers',
+  'tailwind',
+  'git',
+  'docker',
+  'postgresql',
+  'javascript',
+  'html5',
+  'css3',
+  'link',
+  'express',
+  'redis',
+  'jest',
+  'expo',
+  'firebase',
+  'vite',
+  'sass',
+  'graphql',
+  'apollo',
+];
+
+const PROJECT_FALL_DURATION = 100;
+
+const PROJECT_ICONS_COUNT = 48;
+const PROJECT_LANES_COUNT = 24;
+
+const projectDecor: DecorItem[] = Array.from(
+  { length: PROJECT_ICONS_COUNT },
+  (_, index) => {
+    const lane = index % PROJECT_LANES_COUNT;
+    const row = Math.floor(index / PROJECT_LANES_COUNT);
+
+    const phaseIndex = (index * 17) % PROJECT_ICONS_COUNT;
+
+    const phase = phaseIndex / PROJECT_ICONS_COUNT;
+
+    const laneStep = 92 / (PROJECT_LANES_COUNT - 1);
+
+    const baseX = 4 + lane * laneStep;
+
+    const horizontalOffset = row === 0 ? -0.65 : 0.65;
+
+    return {
+      icon: projectTechnologyIcons[index % projectTechnologyIcons.length],
+
+      x: Math.min(97, Math.max(3, baseX + horizontalOffset)),
+
+      y: -10,
+
+      size: 32 + ((index * 7) % 10),
+
+      delay: -(phase * PROJECT_FALL_DURATION),
+
+      duration: PROJECT_FALL_DURATION,
+
+      rotate: -12 + ((index * 11) % 25),
+    };
+  }
+);
+
+const sets: Record<Variant, DecorItem[]> = {
+  hero: [
+    {
+      icon: 'react',
+      x: 7,
+      y: 18,
+      size: 46,
+      delay: -2,
+      duration: 12,
+      rotate: -10,
+    },
+    {
+      icon: 'typescript',
+      x: 90,
+      y: 24,
+      size: 42,
+      delay: -7,
+      duration: 14,
+      rotate: 9,
+    },
+    {
+      icon: 'nextjs',
+      x: 12,
+      y: 80,
+      size: 43,
+      delay: -5,
+      duration: 13,
+      rotate: 5,
+    },
+    {
+      icon: 'nodejs',
+      x: 85,
+      y: 72,
+      size: 40,
+      delay: -10,
+      duration: 15,
+      rotate: -8,
+    },
+    {
+      icon: 'binary',
+      x: 50,
+      y: 8,
+      size: 36,
+      delay: -3,
+      duration: 11,
+      rotate: 0,
+    },
+    {
+      icon: 'javascript',
+      x: 72,
+      y: 89,
+      size: 34,
+      delay: -8,
+      duration: 16,
+      rotate: 7,
+    },
+  ],
+
+  about: [
+    {
+      icon: 'code',
+      x: 5,
+      y: 27,
+      size: 40,
+      delay: -4,
+      duration: 13,
+      rotate: -8,
+    },
+    {
+      icon: 'braces',
+      x: 91,
+      y: 22,
+      size: 44,
+      delay: -9,
+      duration: 15,
+      rotate: 12,
+    },
+    {
+      icon: 'database',
+      x: 9,
+      y: 78,
+      size: 38,
+      delay: -7,
+      duration: 12,
+      rotate: 5,
+    },
+    {
+      icon: 'layers',
+      x: 88,
+      y: 74,
+      size: 42,
+      delay: -2,
+      duration: 14,
+      rotate: -5,
+    },
+    {
+      icon: 'redux',
+      x: 26,
+      y: 88,
+      size: 34,
+      delay: -11,
+      duration: 16,
+      rotate: -8,
+    },
+    {
+      icon: 'react-query',
+      x: 73,
+      y: 12,
+      size: 34,
+      delay: -6,
+      duration: 15,
+      rotate: 6,
+    },
+  ],
+
+  contacts: [
+    {
+      icon: 'github',
+      x: 8,
+      y: 19,
+      size: 36,
+      delay: 0,
+      duration: 20,
+      rotate: -7,
+      pair: 0,
+    },
+    {
+      icon: 'mail',
+      x: 20,
+      y: 19,
+      size: 36,
+      delay: 0,
+      duration: 20,
+      rotate: 7,
+      pair: 0,
+    },
+    {
+      icon: 'linkedin',
+      x: 34,
+      y: 19,
+      size: 38,
+      delay: 0,
+      duration: 20,
+      rotate: -5,
+      pair: 1,
+    },
+    {
+      icon: 'telegram',
+      x: 49,
+      y: 19,
+      size: 38,
+      delay: 0,
+      duration: 20,
+      rotate: 6,
+      pair: 1,
+    },
+    {
+      icon: 'phone',
+      x: 64,
+      y: 19,
+      size: 36,
+      delay: 0,
+      duration: 20,
+      rotate: -8,
+      pair: 2,
+    },
+    {
+      icon: 'gitlab',
+      x: 79,
+      y: 19,
+      size: 37,
+      delay: 0,
+      duration: 20,
+      rotate: 8,
+      pair: 2,
+    },
+    {
+      icon: 'message',
+      x: 92,
+      y: 19,
+      size: 37,
+      delay: 0,
+      duration: 20,
+      rotate: -5,
+      pair: 3,
+    },
+    {
+      icon: 'send',
+      x: 10,
+      y: 49,
+      size: 34,
+      delay: 0,
+      duration: 20,
+      rotate: 7,
+      pair: 3,
+    },
+    {
+      icon: 'link',
+      x: 23,
+      y: 49,
+      size: 35,
+      delay: 0,
+      duration: 20,
+      rotate: -7,
+      pair: 4,
+    },
+    {
+      icon: 'globe',
+      x: 37,
+      y: 49,
+      size: 37,
+      delay: 0,
+      duration: 20,
+      rotate: 6,
+      pair: 4,
+    },
+    {
+      icon: 'github',
+      x: 52,
+      y: 49,
+      size: 36,
+      delay: 0,
+      duration: 20,
+      rotate: -6,
+      pair: 5,
+    },
+    {
+      icon: 'mail',
+      x: 67,
+      y: 49,
+      size: 36,
+      delay: 0,
+      duration: 20,
+      rotate: 8,
+      pair: 5,
+    },
+    {
+      icon: 'linkedin',
+      x: 81,
+      y: 49,
+      size: 38,
+      delay: 0,
+      duration: 20,
+      rotate: -8,
+      pair: 6,
+    },
+    {
+      icon: 'telegram',
+      x: 93,
+      y: 49,
+      size: 38,
+      delay: 0,
+      duration: 20,
+      rotate: 5,
+      pair: 6,
+    },
+    {
+      icon: 'phone',
+      x: 9,
+      y: 79,
+      size: 36,
+      delay: 0,
+      duration: 20,
+      rotate: -5,
+      pair: 7,
+    },
+    {
+      icon: 'gitlab',
+      x: 24,
+      y: 79,
+      size: 37,
+      delay: 0,
+      duration: 20,
+      rotate: 7,
+      pair: 7,
+    },
+    {
+      icon: 'message',
+      x: 40,
+      y: 79,
+      size: 37,
+      delay: 0,
+      duration: 20,
+      rotate: -8,
+      pair: 8,
+    },
+    {
+      icon: 'send',
+      x: 57,
+      y: 79,
+      size: 34,
+      delay: 0,
+      duration: 20,
+      rotate: 8,
+      pair: 8,
+    },
+    {
+      icon: 'link',
+      x: 74,
+      y: 79,
+      size: 35,
+      delay: 0,
+      duration: 20,
+      rotate: -6,
+      pair: 9,
+    },
+    {
+      icon: 'globe',
+      x: 91,
+      y: 79,
+      size: 37,
+      delay: 0,
+      duration: 20,
+      rotate: 6,
+      pair: 9,
+    },
+  ],
+
+  projects: projectDecor,
+
+  experience: [
+    {
+      icon: 'monitor',
+      x: 8,
+      y: 22,
+      size: 40,
+      delay: -6,
+      duration: 14,
+      rotate: -8,
+    },
+    {
+      icon: 'layers',
+      x: 91,
+      y: 20,
+      size: 42,
+      delay: -10,
+      duration: 16,
+      rotate: 8,
+    },
+    {
+      icon: 'code',
+      x: 12,
+      y: 78,
+      size: 36,
+      delay: -8,
+      duration: 13,
+      rotate: 6,
+    },
+    {
+      icon: 'git-branch',
+      x: 87,
+      y: 76,
+      size: 38,
+      delay: -4,
+      duration: 15,
+      rotate: -8,
+    },
+    {
+      icon: 'terminal',
+      x: 52,
+      y: 88,
+      size: 34,
+      delay: -11,
+      duration: 17,
+      rotate: 0,
+    },
+  ],
+
+  education: [
+    {
+      icon: 'book',
+      x: 6,
+      y: 24,
+      size: 42,
+      delay: -5,
+      duration: 14,
+      rotate: -9,
+    },
+    {
+      icon: 'graduation',
+      x: 91,
+      y: 18,
+      size: 46,
+      delay: -10,
+      duration: 16,
+      rotate: 9,
+    },
+    {
+      icon: 'trophy',
+      x: 9,
+      y: 78,
+      size: 38,
+      delay: -8,
+      duration: 13,
+      rotate: 7,
+    },
+    {
+      icon: 'lightbulb',
+      x: 88,
+      y: 75,
+      size: 40,
+      delay: -3,
+      duration: 15,
+      rotate: -8,
+    },
+    {
+      icon: 'users',
+      x: 51,
+      y: 88,
+      size: 36,
+      delay: -11,
+      duration: 17,
+      rotate: 0,
+    },
+  ],
+};
+---
+
+<div
+  class:list={['section-decor', `section-decor--${variant}`]}
+  aria-hidden="true"
+>
+  {
+    sets[variant].map((item) => (
+      <span
+        class="section-decor__item"
+        style={`
+          --x: ${item.x}%;
+          --y: ${item.y}%;
+          --icon-size: ${item.size}px;
+          --delay: ${item.delay}s;
+          --duration: ${item.duration}s;
+          --rotate: ${item.rotate}deg;
+          --pair: ${item.pair ?? 0};
+          --pair-delay: ${-((item.pair ?? 0) * 2)}s;
+        `}
+      >
+        <Icon name={item.icon} size={item.size} />
+      </span>
+    ))
+  }
+</div>

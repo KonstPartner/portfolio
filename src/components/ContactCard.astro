@@ -1,0 +1,27 @@
+---
+import type { Contact } from '../data/portfolio';
+import Icon from './Icon.astro';
+
+type Props = {
+  contact: Contact;
+};
+
+const { contact } = Astro.props;
+const opensNewTab = contact.href.startsWith('http');
+---
+
+<a
+  class="contact-card reveal-item"
+  href={contact.href}
+  rel={opensNewTab ? 'noreferrer' : undefined}
+  target={opensNewTab ? '_blank' : undefined}
+>
+  <span class="contact-card__icon">
+    <Icon name={contact.icon} size={21} />
+  </span>
+  <span class="contact-card__content">
+    <strong>{contact.label}</strong>
+    <small>{contact.value}</small>
+  </span>
+  <Icon name="arrow" size={18} />
+</a>

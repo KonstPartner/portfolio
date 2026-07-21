@@ -1,0 +1,145 @@
+---
+import type { Project } from '../data/portfolio';
+import Icon from './Icon.astro';
+import ProjectLinks from './ProjectLinks.astro';
+import ThemeImage from './ThemeImage.astro';
+
+type Props = {
+  project: Project;
+  index: number;
+};
+
+const { project, index } = Astro.props;
+const previewImages = project.images.slice(1, 4);
+---
+
+<article
+  class:list={[
+    'featured-project',
+    index % 2 === 1 && 'featured-project--reverse',
+    'reveal-group',
+  ]}
+  data-reveal-group
+  id={project.id}
+>
+  <div class="featured-project__content reveal-item">
+    <div class="featured-project__number">0{index + 1}</div>
+    <p class="eyebrow">{project.eyebrow}</p>
+    <h3>{project.title}</h3>
+    <p class="featured-project__summary">{project.summary}</p>
+
+    <div class="contribution-block">
+      <p class="contribution-block__title">What I built</p>
+      <ul>
+        {project.contribution.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+
+    <ul class="technology-list" aria-label={`${project.title} technologies`}>
+      {project.technologies.map((technology) => <li>{technology}</li>)}
+    </ul>
+
+    <ProjectLinks links={project.links} />
+  </div>
+
+  <div
+    class:list={[
+      'featured-project__visual',
+      project.mobileGallery && 'featured-project__visual--mobile',
+      'reveal-item',
+    ]}
+  >
+    <div class="visual-frame" data-tilt-card>
+      <span class="visual-frame__chrome" aria-hidden="true">
+        <i></i><i></i><i></i>
+        <small>{project.id}</small>
+      </span>
+
+      <button
+        aria-label={`Open ${project.title} screenshot gallery`}
+        class="visual-frame__main"
+        data-gallery-open={project.id}
+        type="button"
+      >
+        <ThemeImage
+          className="visual-frame__image"
+          eager={index === 0}
+          image={project.images[0]}
+        />
+      </button>
+
+      {
+        previewImages.length > 0 && (
+          <div class="visual-frame__rail">
+            {previewImages.map((image, imageIndex) => (
+              <button
+                aria-label={`Open screenshot ${imageIndex + 2}`}
+                class="visual-frame__thumb"
+                data-dark-src={image.dark}
+                data-light-src={image.light}
+                data-lightbox-alt={image.alt}
+                data-image-kind={project.mobileGallery ? 'mobile' : 'desktop'}
+                data-lightbox-open
+                type="button"
+              >
+                <ThemeImage image={image} />
+              </button>
+            ))}
+          </div>
+        )
+      }
+    </div>
+
+    <button
+      class="gallery-trigger"
+      data-gallery-open={project.id}
+      type="button"
+    >
+      <span>View all {project.images.length} screenshots</span>
+      <Icon name="arrow" size={18} />
+    </button>
+  </div>
+
+  <dialog class="gallery-dialog" data-gallery-dialog={project.id}>
+    <div class="dialog-shell">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">Screenshots</p>
+          <h3>{project.title}</h3>
+        </div>
+        <button
+          aria-label="Close screenshot gallery"
+          class="icon-button"
+          data-dialog-close
+          type="button"
+        >
+          <Icon name="close" size={22} />
+        </button>
+      </div>
+
+      <div
+        class:list={[
+          'gallery-grid',
+          project.mobileGallery && 'gallery-grid--mobile',
+        ]}
+      >
+        {
+          project.images.map((image, imageIndex) => (
+            <button
+              aria-label={`Open screenshot ${imageIndex + 1}`}
+              class="gallery-grid__item"
+              data-dark-src={image.dark}
+              data-light-src={image.light}
+              data-lightbox-alt={image.alt}
+              data-image-kind={project.mobileGallery ? 'mobile' : 'desktop'}
+              data-lightbox-open
+              type="button"
+            >
+              <ThemeImage image={image} />
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </dialog>
+</article>

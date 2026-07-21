@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+---
+
+<div
+  aria-label="Color theme"
+  class="theme-switcher"
+  data-theme-switcher
+  role="radiogroup"
+>
+  <button
+    aria-label="Use light theme"
+    class="theme-switcher__button"
+    data-theme-mode="light"
+    role="radio"
+    type="button"
+  >
+    <Icon name="sun" size={17} />
+  </button>
+  <button
+    aria-label="Use dark theme"
+    class="theme-switcher__button"
+    data-theme-mode="dark"
+    role="radio"
+    type="button"
+  >
+    <Icon name="moon" size={17} />
+  </button>
+  <button
+    aria-label="Use system theme"
+    class="theme-switcher__button"
+    data-theme-mode="system"
+    role="radio"
+    type="button"
+  >
+    <Icon name="monitor" size={17} />
+  </button>
+</div>
