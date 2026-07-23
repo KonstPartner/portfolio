@@ -163,6 +163,11 @@ export const projects: Project[] = [
         href: 'https://github.com/KonstPartner/Book-Library',
         kind: 'github',
       },
+      {
+        label: 'Live preview',
+        href: 'https://konst21-book-library.vercel.app/',
+        kind: 'preview',
+      },
     ],
     featured: true,
   },
