@@ -4,6 +4,7 @@ type ThemeMode = Theme | 'system';
 const root = document.documentElement;
 const body = document.body;
 const header = document.querySelector<HTMLElement>('[data-site-header]');
+const heroShell = document.querySelector<HTMLElement>('.hero-shell');
 const menuToggle =
   document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
 const mobileNav = document.querySelector<HTMLElement>('[data-mobile-nav]');
@@ -115,11 +116,32 @@ if (intro) {
 }
 
 const updateHeader = (): void => {
-  header?.classList.toggle('is-scrolled', window.scrollY > 14);
+  if (!header) {
+    return;
+  }
+
+  header.classList.toggle('is-scrolled', window.scrollY > 14);
+
+  if (!heroShell) {
+    header.classList.remove('is-over-hero');
+    return;
+  }
+
+  const heroBottom = heroShell.getBoundingClientRect().bottom;
+  const headerHeight = header.offsetHeight;
+
+  header.classList.toggle('is-over-hero', heroBottom > headerHeight);
 };
 
 updateHeader();
-window.addEventListener('scroll', updateHeader, { passive: true });
+
+window.addEventListener('scroll', updateHeader, {
+  passive: true,
+});
+
+window.addEventListener('resize', updateHeader, {
+  passive: true,
+});
 
 const closeMobileMenu = (): void => {
   header?.classList.remove('is-menu-open');
@@ -699,3 +721,23 @@ railHandle?.addEventListener('lostpointercapture', () => {
 });
 
 requestRailUpdate();
+
+const heroBackgroundVideo = document.querySelector<HTMLVideoElement>(
+  '[data-hero-background-video]'
+);
+
+if (heroBackgroundVideo) {
+  const showHeroBackgroundVideo = (): void => {
+    heroBackgroundVideo.classList.add('is-ready');
+  };
+
+  heroBackgroundVideo.addEventListener('playing', showHeroBackgroundVideo, {
+    once: true,
+  });
+
+  if (heroBackgroundVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+    showHeroBackgroundVideo();
+  }
+
+  void heroBackgroundVideo.play().catch(() => {});
+}

@@ -386,8 +386,8 @@ a:focus-visible {
   grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
   align-items: center;
   gap: clamp(40px, 7vw, 110px);
-  padding-top: 132px;
-  padding-bottom: 92px;
+  padding-top: 78px;
+  padding-bottom: 48px;
 }
 
 .hero__copy {
@@ -1492,10 +1492,6 @@ a:focus-visible {
 
   color: #61dafb;
 
-  /*
-   * Только позиционирование.
-   * Фона, рамки и круглой обводки больше нет.
-   */
   transform: translate(-50%, -50%);
 
   filter: drop-shadow(0 0 7px rgb(97 218 251 / 55%))
@@ -1643,8 +1639,9 @@ a:focus-visible {
 
   .hero {
     grid-template-columns: 1fr;
-    min-height: auto;
-    padding-top: 150px;
+    min-height: 100svh;
+    padding-top: 120px;
+    padding-bottom: 60px;
   }
 
   .hero__copy {
@@ -3585,17 +3582,13 @@ a:focus-visible {
 }
 
 .section--about .section-heading {
-  position: sticky;
-  top: 110px;
+  position: static;
+  top: auto;
 }
 
 @media (max-width: 1000px) {
   .section--about .section-grid {
     grid-template-columns: 1fr;
-  }
-
-  .section--about .section-heading {
-    position: static;
   }
 }
 
@@ -3718,10 +3711,6 @@ body {
   }
 }
 
-/*
- * Фиксированный header всегда привязан к viewport,
- * а не к ширине содержимого страницы.
- */
 .site-header {
   right: 0;
   left: 0;
@@ -3745,10 +3734,6 @@ body {
   transform: none;
 }
 
-/*
- * Hero может показывать орбиту за пределами своей сетки,
- * но корневой элемент страницы не разрешает горизонтальный скролл.
- */
 .hero {
   overflow: visible;
 }
@@ -3781,9 +3766,6 @@ body {
     border-radius: 9px;
   }
 
-  /*
-   * Убираем прежнее смещение компонента.
-   */
   .hero__visual {
     right: auto;
     left: auto;
@@ -3792,10 +3774,6 @@ body {
     margin-inline: auto;
   }
 
-  /*
-   * Внешняя орбита учитывает ширину React-иконки
-   * и её свечение.
-   */
   .portrait-orbit--one {
     width: min(330px, calc(100vw - 74px));
     height: auto;
@@ -3876,4 +3854,204 @@ body {
     font-size: clamp(26px, 8vw, 34px);
     overflow-wrap: anywhere;
   }
+}
+
+.hero-shell {
+  position: relative;
+  isolation: isolate;
+
+  width: 100%;
+  min-height: 100svh;
+
+  overflow: hidden;
+  background: #000;
+}
+
+.hero-shell .hero {
+  position: relative;
+  z-index: 2;
+
+  min-height: 100svh;
+  box-sizing: border-box;
+
+  background: transparent;
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  overflow: hidden;
+  background: #000;
+  pointer-events: none;
+}
+
+.hero-background__video {
+  position: absolute;
+  inset: 0;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.hero-background__video.is-ready {
+  opacity: 1;
+}
+
+.about-portrait {
+  width: 100%;
+  min-height: 560px;
+  margin-top: 44px;
+}
+
+.about-code-showcase {
+  margin-top: 42px;
+}
+
+.about-code-showcase > * {
+  width: 100%;
+}
+
+@media (max-width: 1000px) {
+  .about-portrait {
+    min-height: 520px;
+    margin-top: 34px;
+  }
+}
+
+@media (max-width: 650px) {
+  .about-portrait {
+    min-height: 450px;
+    margin-top: 26px;
+  }
+
+  .about-code-showcase {
+    margin-top: 30px;
+  }
+}
+
+.hero-shell {
+  --text: #f2f1e9;
+  --muted: #a3a89b;
+  --muted-strong: #d1d4ca;
+  --line: rgba(242, 241, 233, 0.12);
+  --line-strong: rgba(242, 241, 233, 0.25);
+  --surface: rgba(25, 29, 24, 0.74);
+  --surface-strong: #171b16;
+  --bg-elevated: #111410;
+}
+
+.hero-shell .button--primary {
+  color: #111410;
+  border-color: #f2f1e9;
+  background: #f2f1e9;
+}
+
+.hero-shell .button--primary:hover {
+  color: #fff;
+  border-color: #ff7540;
+  background: #ff7540;
+}
+
+.hero-shell .button--secondary {
+  color: #f2f1e9;
+  border-color: rgba(242, 241, 233, 0.25);
+  background: rgba(25, 29, 24, 0.74);
+  backdrop-filter: blur(14px);
+}
+
+.hero-shell .button--secondary:hover {
+  color: #fff;
+  border-color: rgba(242, 241, 233, 0.42);
+  background: rgba(25, 29, 24, 0.92);
+}
+
+.hero-shell .hero__kicker,
+.hero-shell .hero__lead {
+  color: #d1d4ca;
+}
+
+.hero-shell .hero h1 {
+  color: #f2f1e9;
+}
+
+.hero-shell .hero h1 em {
+  color: #ff7540;
+}
+
+.site-header.is-over-hero {
+  --text: #f2f1e9;
+  --muted: #a3a89b;
+  --muted-strong: #d1d4ca;
+  --line: rgba(242, 241, 233, 0.14);
+  --line-strong: rgba(242, 241, 233, 0.28);
+  --surface: rgba(17, 20, 16, 0.62);
+  --surface-strong: #171b16;
+  --bg-elevated: #111410;
+  --header: rgba(12, 14, 12, 0.72);
+
+  color: #f2f1e9;
+}
+
+.site-header.is-over-hero .brand {
+  color: #f2f1e9;
+}
+
+.site-header.is-over-hero .brand__mark {
+  color: #111410;
+  border-color: rgba(242, 241, 233, 0.3);
+  background: #f2f1e9;
+}
+
+.site-header.is-over-hero .desktop-nav {
+  border-color: rgba(242, 241, 233, 0.16);
+  background: rgba(17, 20, 16, 0.58);
+  backdrop-filter: blur(14px);
+}
+
+.site-header.is-over-hero .desktop-nav a {
+  color: #d1d4ca;
+}
+
+.site-header.is-over-hero .desktop-nav a:hover,
+.site-header.is-over-hero .desktop-nav a.is-active {
+  color: #f2f1e9;
+  background: rgba(242, 241, 233, 0.12);
+}
+
+.site-header.is-over-hero .theme-switcher,
+.site-header.is-over-hero .menu-button {
+  border-color: rgba(242, 241, 233, 0.16);
+  background: rgba(17, 20, 16, 0.58);
+  backdrop-filter: blur(14px);
+}
+
+.site-header.is-over-hero .theme-switcher__button,
+.site-header.is-over-hero .menu-button {
+  color: #a3a89b;
+}
+
+.site-header.is-over-hero .theme-switcher__button:hover,
+.site-header.is-over-hero .menu-button:hover {
+  color: #f2f1e9;
+}
+
+.site-header.is-over-hero .theme-switcher__button.is-active {
+  color: #111410;
+  background: #f2f1e9;
+}
+
+.site-header.is-scrolled,
+.site-header.is-menu-open {
+  border-color: var(--line);
+  background: var(--header);
+  backdrop-filter: blur(18px) saturate(150%);
 }

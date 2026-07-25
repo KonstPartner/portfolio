@@ -1,138 +1,157 @@
 ---
 const presets = [
-  `type Project = {
-  name: string;
-  stack: string[];
-  featured: boolean;
+  `type DeveloperProfile = {
+  role: string;
+  frontend: string[];
+  data: string[];
+  backend: string[];
 };
 
-const portfolio: Project = {
-  name: 'Localize',
-  stack: ['React Native', 'Expo', 'TypeScript'],
-  featured: true,
+export const konstantin: DeveloperProfile = {
+  role: 'Frontend Developer',
+
+  frontend: [
+    'React',
+    'Next.js',
+    'React Native',
+    'Expo',
+  ],
+
+  data: [
+    'REST API',
+    'Firebase',
+    'TanStack Query',
+    'Redux',
+    'Zustand',
+  ],
+
+  backend: [
+    'Node.js',
+    'Express',
+    'PostgreSQL',
+    'Redis',
+    'Docker',
+  ],
 };`,
 
-  `const useProjects = () => {
-  return useQuery({
-    queryKey: ['projects'],
-    queryFn: projectsApi.getAll,
-    staleTime: 60_000,
-  });
-};`,
+  `export const frontendStack = {
+  web: [
+    'React',
+    'Next.js',
+    'TypeScript',
+  ],
 
-  `export default function HomePage() {
-  return (
-    <main>
-      <Hero />
-      <Projects />
-      <Experience />
-      <Contacts />
-    </main>
-  );
-}`,
+  mobile: [
+    'React Native',
+    'Expo',
+  ],
 
-  `const useThemeStore = create<ThemeState>((set) => ({
-  mode: 'system',
-
-  setMode: (mode) => {
-    set({ mode });
-  },
-}));`,
-
-  `const response = await fetch('/api/projects', {
-  headers: {
-    Authorization: \`Bearer \${token}\`,
-  },
-});
-
-const projects = await response.json();`,
-
-  `export const projectSchema = z.object({
-  title: z.string().min(1),
-  description: z.string(),
-  technologies: z.array(z.string()),
-  previewUrl: z.string().url().optional(),
-});`,
-
-  `const app = express();
-
-app.use(express.json());
-app.use('/api/projects', projectsRouter);
-
-app.listen(PORT, () => {
-  console.log(\`Server started on \${PORT}\`);
-});`,
-
-  `export async function getProjects() {
-  const snapshot = await getDocs(
-    collection(database, 'projects')
-  );
-
-  return snapshot.docs.map((document) => ({
-    id: document.id,
-    ...document.data(),
-  }));
-}`,
-
-  `const ProjectCard = ({ project }: Props) => (
-  <article className="project-card">
-    <img
-      src={project.image}
-      alt={project.title}
-    />
-    <h3>{project.title}</h3>
-  </article>
-);`,
-
-  `describe('ProjectCard', () => {
-  it('renders the project title', () => {
-    render(<ProjectCard project={project} />);
-
-    expect(
-      screen.getByText(project.title)
-    ).toBeInTheDocument();
-  });
-});`,
-
-  `const routes = {
-  home: '/',
-  projects: '/projects',
-  project: (slug: string) => \`/projects/\${slug}\`,
+  principles: [
+    'Reusable components',
+    'Clear module boundaries',
+    'Maintainable architecture',
+  ],
 } as const;`,
 
-  `export async function createProject(
-  payload: CreateProjectPayload
-): Promise<Project> {
-  const response = await api.post('/projects', payload);
+  `export const dataLayer = {
+  api: 'REST API',
+  remoteState: 'TanStack Query',
 
-  return response.data;
-}`,
+  stateManagement: [
+    'Redux',
+    'Zustand',
+  ],
 
-  `const technologies = [
-  'React',
-  'Next.js',
-  'React Native',
-  'TypeScript',
-  'Firebase',
-  'PostgreSQL',
-];
+  services: [
+    'Firebase Authentication',
+    'Firestore',
+    'Cloud Storage',
+  ],
+} as const;`,
 
-technologies.forEach(console.log);`,
+  `export const backendExperience = {
+  runtime: 'Node.js',
+  framework: 'Express',
 
-  `export const metadata = {
-  title: 'Konstantin — Frontend Developer',
-  description:
-    'React, React Native, Next.js and TypeScript',
+  databases: [
+    'PostgreSQL',
+    'Redis',
+  ],
+
+  infrastructure: [
+    'Docker',
+    'REST API',
+  ],
+} as const;`,
+
+  `type LanguageLevel =
+  | 'Native'
+  | 'Upper-Intermediate';
+
+export const communication = {
+  softSkills: [
+    'Teamwork',
+    'Communication',
+    'Stress resistance',
+  ],
+
+  languages: {
+    russian: 'Native',
+    english: 'Upper-Intermediate',
+  } satisfies Record<string, LanguageLevel>,
 };`,
 
-  `src/
-├── entities/
-├── features/
-├── pages/
-├── shared/
-└── widgets/
+  `export const productApproach = {
+  architecture: [
+    'Clear responsibilities',
+    'Predictable state',
+    'Reusable modules',
+  ],
 
-export const architecture = 'Feature-Sliced Design';`,
+  delivery: [
+    'Transparent communication',
+    'Early risk reporting',
+    'Deadline awareness',
+  ],
+
+  growth: [
+    'Changing requirements',
+    'Long-term maintainability',
+    'Product scalability',
+  ],
+} as const;`,
+
+  `export function buildProduct() {
+  return {
+    developer: 'Konstantin',
+
+    capabilities: [
+      'Web applications',
+      'Cross-platform mobile apps',
+      'Frontend architecture',
+      'API integrations',
+    ],
+
+    priorities: [
+      'Product value',
+      'Code quality',
+      'Reliable delivery',
+    ],
+  };
+}`,
+
+  `const workflow = [
+  'Understand product requirements',
+  'Design application architecture',
+  'Build reusable interfaces',
+  'Integrate APIs and services',
+  'Test critical scenarios',
+  'Prepare for future growth',
+];
+
+workflow.forEach((step, index) => {
+  console.log(\`\${index + 1}. \${step}\`);
+});`,
 ];
 
 const presetsJson = JSON.stringify(presets);
@@ -169,19 +188,24 @@ const presetsJson = JSON.stringify(presets);
 
 <script>
   const initializeCodeShowcase = () => {
-    const root = document.querySelector<HTMLElement>('[data-code-showcase]');
+    const rootElement = document.querySelector<HTMLElement>(
+      '[data-code-showcase]'
+    );
 
-    if (!root || root.dataset.initialized === 'true') {
+    if (!rootElement || rootElement.dataset.initialized === 'true') {
       return;
     }
+
+    const root = rootElement;
 
     root.dataset.initialized = 'true';
 
     const output = root.querySelector<HTMLElement>('[data-code-output]');
     const lines = root.querySelector<HTMLElement>('[data-code-lines]');
     const filename = root.querySelector<HTMLElement>('[data-code-filename]');
+    const body = root.querySelector<HTMLElement>('.code-showcase__body');
 
-    if (!output || !lines || !filename) {
+    if (!output || !lines || !filename || !body) {
       return;
     }
 
@@ -194,21 +218,14 @@ const presetsJson = JSON.stringify(presets);
     const presets = JSON.parse(rawPresets) as string[];
 
     const filenames = [
-      'project.ts',
-      'useProjects.ts',
-      'page.tsx',
-      'themeStore.ts',
-      'api.ts',
-      'schema.ts',
-      'server.ts',
-      'firebase.ts',
-      'ProjectCard.tsx',
-      'ProjectCard.test.tsx',
-      'routes.ts',
-      'createProject.ts',
-      'technologies.ts',
-      'metadata.ts',
-      'architecture.ts',
+      'developer.ts',
+      'frontend.ts',
+      'dataLayer.ts',
+      'backend.ts',
+      'communication.ts',
+      'productApproach.ts',
+      'buildProduct.ts',
+      'workflow.ts',
     ];
 
     const reducedMotion = window.matchMedia(
@@ -269,6 +286,13 @@ const presetsJson = JSON.stringify(presets);
     const render = () => {
       output.innerHTML = highlightCode(currentText);
       updateLineNumbers(currentText);
+
+      requestAnimationFrame(() => {
+        body.scrollTo({
+          top: body.scrollHeight,
+          behavior: isDeleting ? 'auto' : 'smooth',
+        });
+      });
     };
 
     const getNextPresetIndex = () => {
@@ -374,6 +398,10 @@ const presetsJson = JSON.stringify(presets);
 </script>
 
 <style>
+  .code-showcase__body {
+    scroll-behavior: smooth;
+  }
+
   .code-showcase {
     position: relative;
     width: 100%;
@@ -392,6 +420,25 @@ const presetsJson = JSON.stringify(presets);
       inset 0 1px 0 rgb(255 255 255 / 6%);
 
     isolation: isolate;
+
+    transform: perspective(1200px) rotateX(1.2deg) rotateY(-1.5deg);
+    transform-origin: center;
+    animation: code-showcase-float 7s ease-in-out infinite;
+    will-change: transform;
+    transition:
+      transform 320ms ease,
+      box-shadow 320ms ease;
+  }
+  .code-showcase:hover {
+    animation-play-state: paused;
+
+    transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(-5px)
+      scale(1.008);
+
+    box-shadow:
+      0 34px 80px rgb(0 0 0 / 24%),
+      0 0 0 1px rgb(255 255 255 / 5%),
+      inset 0 1px 0 rgb(255 255 255 / 7%);
   }
 
   .code-showcase__filename {
@@ -486,8 +533,16 @@ const presetsJson = JSON.stringify(presets);
     height: 334px;
     display: grid;
     grid-template-columns: 42px minmax(0, 1fr);
-    overflow: auto;
+    overflow: hidden;
     padding: 20px 0 22px;
+  }
+
+  .code-showcase__body {
+    scrollbar-width: none;
+  }
+
+  .code-showcase__body::-webkit-scrollbar {
+    display: none;
   }
 
   .code-showcase__numbers {
@@ -562,6 +617,19 @@ const presetsJson = JSON.stringify(presets);
     color: #f2cc60;
   }
 
+  @keyframes code-showcase-float {
+    0%,
+    100% {
+      transform: perspective(1200px) rotateX(1.2deg) rotateY(-1.5deg)
+        translateY(0);
+    }
+
+    50% {
+      transform: perspective(1200px) rotateX(0.4deg) rotateY(-0.7deg)
+        translateY(-9px);
+    }
+  }
+
   @keyframes code-cursor-blink {
     0%,
     45% {
@@ -623,6 +691,11 @@ const presetsJson = JSON.stringify(presets);
   @media (prefers-reduced-motion: reduce) {
     .code-showcase__cursor {
       animation: none;
+    }
+
+    .code-showcase {
+      animation: none;
+      transform: none;
     }
   }
 </style>

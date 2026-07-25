@@ -47,6 +47,10 @@ const createNumberedThemeAssets = (
 export const ASSETS = {
   favicon: publicAsset('favicon.svg'),
 
+  video: {
+    hero: publicAsset('videos/hero-background.mp4'),
+  },
+
   profile: {
     konstantin: publicAsset('images/profile/konstantin.jpg'),
   },

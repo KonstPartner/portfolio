@@ -6,16 +6,18 @@ import ProjectCard from '../components/ProjectCard.astro';
 import SectionDecor from '../components/SectionDecor.astro';
 import SectionRail from '../components/SectionRail.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
-import { contacts, education, experience, projects } from '../data/portfolio';
-import BaseLayout from '../layouts/BaseLayout.astro';
 import CodeShowcase from '../components/CodeShowcase.astro';
+
+import { contacts, education, experience, projects } from '../data/portfolio';
 import { ASSETS } from '../config/assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
 const featuredProjects = projects.filter((project) => project.featured);
 const otherProjects = projects.filter((project) => !project.featured);
 
 const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
   const duration = 18 + (laneIndex % 7) * 0.9;
+
   const text = Array.from({ length: 190 }, (_, rowIndex) =>
     (laneIndex * 7 + rowIndex * 11 + laneIndex * rowIndex) % 5 < 2 ? '1' : '0'
   ).join('');
@@ -35,6 +37,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
 >
   <div class="intro-screen" data-intro-screen aria-hidden="true">
     <div class="intro-screen__grid"></div>
+
     <div class="intro-screen__binary">
       {
         binaryStreams.map((stream, index) => (
@@ -47,6 +50,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
         ))
       }
     </div>
+
     <div class="intro-screen__content">
       <span>Portfolio</span>
       <strong>Konstantin</strong>
@@ -74,6 +78,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
 
       <div class="site-header__actions">
         <ThemeToggle />
+
         <button
           aria-expanded="false"
           aria-label="Open navigation"
@@ -100,68 +105,55 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
   <SectionRail />
 
   <main id="top">
-    <section
-      class="hero container reveal-group"
-      aria-labelledby="hero-title"
-      data-reveal-group
-    >
-      <SectionDecor variant="hero" />
-      <div class="hero__copy">
-        <p class="hero__kicker reveal-item">
-          <span></span>
-          Frontend developer · Web and mobile
-        </p>
-
-        <h1 id="hero-title" class="reveal-item">
-          React, React Native,
-          <em>Next.js and TypeScript.</em>
-        </h1>
-
-        <p class="hero__lead reveal-item">
-          I develop web and cross-platform applications, build frontend
-          architecture, integrate APIs, and turn product requirements into
-          working interfaces.
-        </p>
-
-        <div class="hero__actions reveal-item">
-          <a class="button button--primary" href="#projects">
-            View projects
-            <Icon name="arrow" size={18} />
-          </a>
-          <a class="button button--secondary" href="#contacts">Contacts</a>
-        </div>
+    <section class="hero-shell">
+      <div class="hero-background" aria-hidden="true">
+        <video
+          class="hero-background__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          tabindex="-1"
+          data-hero-background-video
+        >
+          <source src={ASSETS.video.hero} type="video/mp4" />
+        </video>
       </div>
 
-      <div class="hero__visual reveal-item" aria-label="Portrait of Konstantin">
-        <div class="portrait-orbit portrait-orbit--one" aria-hidden="true">
-          <span class="portrait-orbit__react">
-            <span class="portrait-orbit__react-spin">
-              <Icon name="react" size={38} />
-            </span>
-          </span>
-        </div>
+      <div
+        class="hero container reveal-group"
+        aria-labelledby="hero-title"
+        data-reveal-group
+      >
+        <SectionDecor variant="hero" />
 
-        <div class="portrait-orbit portrait-orbit--two" aria-hidden="true">
-        </div>
-        <div class="portrait-glow" aria-hidden="true"></div>
-        <div class="portrait-card">
-          <img
-            alt="Konstantin"
-            decoding="async"
-            fetchpriority="high"
-            height="605"
-            src={ASSETS.profile.konstantin}
-            width="519"
-          />
-          <div class="portrait-card__caption">
-            <span>Konstantin</span>
-            <small>Frontend Developer</small>
+        <div class="hero__copy">
+          <p class="hero__kicker reveal-item">
+            <span></span>
+            Frontend developer · Web and mobile
+          </p>
+
+          <h1 id="hero-title" class="reveal-item">
+            React, React Native,
+            <em>Next.js and TypeScript.</em>
+          </h1>
+
+          <p class="hero__lead reveal-item">
+            I develop web and cross-platform applications, build frontend
+            architecture, integrate APIs, and turn product requirements into
+            working interfaces.
+          </p>
+
+          <div class="hero__actions reveal-item">
+            <a class="button button--primary" href="#projects">
+              View projects
+              <Icon name="arrow" size={18} />
+            </a>
+
+            <a class="button button--secondary" href="#contacts"> Contacts </a>
           </div>
         </div>
-        <span class="floating-label floating-label--react">React</span>
-        <span class="floating-label floating-label--native">React Native</span>
-        <span class="floating-label floating-label--next">Next.js</span>
-        <span class="floating-label floating-label--ts">TypeScript</span>
       </div>
     </section>
 
@@ -171,13 +163,56 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
       data-reveal-group
     >
       <SectionDecor variant="about" />
+
       <div class="container section-grid">
         <div class="section-heading reveal-item">
           <p class="section-index section-anchor" id="about">01 / About</p>
 
           <h2 id="about-title">About me</h2>
 
-          <CodeShowcase />
+          <div
+            class="hero__visual about-portrait"
+            aria-label="Portrait of Konstantin"
+          >
+            <div class="portrait-orbit portrait-orbit--one" aria-hidden="true">
+              <span class="portrait-orbit__react">
+                <span class="portrait-orbit__react-spin">
+                  <Icon name="react" size={38} />
+                </span>
+              </span>
+            </div>
+
+            <div class="portrait-orbit portrait-orbit--two" aria-hidden="true">
+            </div>
+
+            <div class="portrait-glow" aria-hidden="true"></div>
+
+            <div class="portrait-card">
+              <img
+                alt="Konstantin"
+                decoding="async"
+                loading="lazy"
+                height="605"
+                src={ASSETS.profile.konstantin}
+                width="519"
+              />
+
+              <div class="portrait-card__caption">
+                <span>Konstantin</span>
+                <small>Frontend Developer</small>
+              </div>
+            </div>
+
+            <span class="floating-label floating-label--react"> React </span>
+
+            <span class="floating-label floating-label--native">
+              React Native
+            </span>
+
+            <span class="floating-label floating-label--next"> Next.js </span>
+
+            <span class="floating-label floating-label--ts"> TypeScript </span>
+          </div>
         </div>
 
         <div class="about-copy reveal-item">
@@ -185,17 +220,20 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
             Frontend developer with experience in web and mobile application
             development using React, React Native, Next.js, and TypeScript.
           </p>
+
           <p>
             Participated in designing and launching products from scratch,
             setting up frontend environments, and integrating REST APIs and
             Firebase.
           </p>
+
           <p>
             I design applications with clear separation of responsibilities
             between modules, reusable components, and predictable state
             management. I account for further product growth, changing
             requirements, and long-term maintainability of the codebase.
           </p>
+
           <p>
             I use AI tools to accelerate design, development, and testing, meet
             deadlines, communicate risks on time, and keep collaboration
@@ -203,39 +241,8 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
             contributing to the company’s success.
           </p>
 
-          <div class="about-stats">
-            <article class="skill-card skill-card--frontend">
-              <span class="skill-card__icon"
-                ><Icon name="react" size={20} /></span
-              >
-              <strong>Frontend</strong>
-              <span>React, Next.js, React Native, Expo</span>
-            </article>
-            <article class="skill-card skill-card--data">
-              <span class="skill-card__icon"
-                ><Icon name="database" size={20} /></span
-              >
-              <strong>Data</strong>
-              <span>REST API, Firebase, TanStack Query, Redux, Zustand</span>
-            </article>
-            <article class="skill-card skill-card--backend">
-              <span class="skill-card__icon"
-                ><Icon name="nodejs" size={20} /></span
-              >
-              <strong>Backend experience</strong>
-              <span>Node.js, Express, PostgreSQL, Redis, Docker</span>
-            </article>
-          </div>
-
-          <div class="about-meta">
-            <div>
-              <strong>Soft skills</strong>
-              <span>Teamwork, communication, stress resistance</span>
-            </div>
-            <div>
-              <strong>Languages</strong>
-              <span>Russian — native · English — B2 (Upper-Intermediate)</span>
-            </div>
+          <div class="about-code-showcase">
+            <CodeShowcase />
           </div>
         </div>
       </div>
@@ -243,6 +250,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
 
     <section class="section section--projects" aria-labelledby="projects-title">
       <SectionDecor variant="projects" />
+
       <div class="container">
         <div
           class="section-heading section-heading--row reveal-item reveal-group"
@@ -252,6 +260,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
             <p class="section-index section-anchor" id="projects">
               02 / Projects
             </p>
+
             <h2 id="projects-title">Projects</h2>
           </div>
         </div>
@@ -290,6 +299,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
       data-reveal-group
     >
       <SectionDecor variant="contacts" />
+
       <div class="container">
         <div
           class="section-heading section-heading--row reveal-item reveal-group"
@@ -299,6 +309,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
             <p class="section-index section-anchor" id="contacts">
               03 / Contacts
             </p>
+
             <h2 id="contacts-title">Contacts</h2>
           </div>
         </div>
@@ -315,12 +326,14 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
       data-reveal-group
     >
       <SectionDecor variant="experience" />
+
       <div class="container">
         <div class="section-heading section-heading--row reveal-item">
           <div>
             <p class="section-index section-anchor" id="experience">
               04 / Experience
             </p>
+
             <h2 id="experience-title">Experience</h2>
           </div>
         </div>
@@ -342,11 +355,17 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
                 <p class="eyebrow">
                   {experience.company} · {experience.location}
                 </p>
+
                 <h3>{experience.role}</h3>
               </div>
+
               <span>{experience.period}</span>
             </div>
-            <p class="experience-card__summary">{experience.summary}</p>
+
+            <p class="experience-card__summary">
+              {experience.summary}
+            </p>
+
             <ul class="experience-card__list">
               {experience.points.map((point: string) => <li>{point}</li>)}
             </ul>
@@ -361,12 +380,14 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
       data-reveal-group
     >
       <SectionDecor variant="education" />
+
       <div class="container">
         <div class="section-heading section-heading--row reveal-item">
           <div>
             <p class="section-index section-anchor" id="education">
               05 / Education
             </p>
+
             <h2 id="education-title">Education</h2>
           </div>
         </div>
@@ -380,6 +401,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
               loading="lazy"
               src={education.image}
             />
+
             <span class="education-card__media-badge">
               <Icon name="graduation" size={20} />
               {education.period}
@@ -392,45 +414,52 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
                 <p class="eyebrow">Bachelor’s degree</p>
                 <h3>{education.university}</h3>
               </div>
+
               <span>{education.grade}</span>
             </div>
-            <p class="education-card__degree">{education.specialization}</p>
+
+            <p class="education-card__degree">
+              {education.specialization}
+            </p>
+
             <p>{education.description}</p>
             <p>{education.activities}</p>
           </div>
         </article>
       </div>
     </section>
+
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <div>
+          <span class="brand__mark">K</span>
+          <p>Konstantin · Frontend Developer</p>
+        </div>
+
+        <a href="#top">
+          Back to top
+          <Icon name="arrow" size={18} />
+        </a>
+      </div>
+    </footer>
+
+    <dialog class="lightbox" data-lightbox-dialog>
+      <button
+        aria-label="Close enlarged image"
+        class="icon-button lightbox__close"
+        data-lightbox-close
+        type="button"
+      >
+        <Icon name="close" size={24} />
+      </button>
+
+      <div class="lightbox__stage">
+        <div class="lightbox__media">
+          <img alt="" data-lightbox-image src="" />
+        </div>
+      </div>
+    </dialog>
+
+    <script src="../scripts/main.ts"></script>
   </main>
-
-  <footer class="site-footer">
-    <div class="container site-footer__inner">
-      <div>
-        <span class="brand__mark">K</span>
-        <p>Konstantin · Frontend Developer</p>
-      </div>
-      <a href="#top">
-        Back to top
-        <Icon name="arrow" size={18} />
-      </a>
-    </div>
-  </footer>
-
-  <dialog class="lightbox" data-lightbox-dialog>
-    <button
-      aria-label="Close enlarged image"
-      class="icon-button lightbox__close"
-      data-lightbox-close
-      type="button"
-    >
-      <Icon name="close" size={24} />
-    </button>
-    <div class="lightbox__stage">
-      <div class="lightbox__media">
-        <img alt="" data-lightbox-image src="" />
-      </div>
-    </div>
-  </dialog>
-
-  <script src="../scripts/main.ts"></script>
 </BaseLayout>
