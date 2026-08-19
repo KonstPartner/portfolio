@@ -72,6 +72,13 @@ export const PROJECT_IMAGES = {
     'Localize mobile application screen'
   ),
 
+  dOne: createNumberedThemeAssets(
+    'd-one',
+    9,
+    '.app.jpg',
+    'DOne diabetes diary mobile application screen'
+  ),
+
   bookLibrary: createNumberedThemeAssets(
     'book_library',
     5,
