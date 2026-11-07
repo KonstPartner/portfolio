@@ -5,6 +5,7 @@ const root = document.documentElement;
 const body = document.body;
 const header = document.querySelector<HTMLElement>('[data-site-header]');
 const heroShell = document.querySelector<HTMLElement>('.hero-shell');
+const rail = document.querySelector<HTMLElement>('[data-section-rail]');
 const menuToggle =
   document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
 const mobileNav = document.querySelector<HTMLElement>('[data-mobile-nav]');
@@ -97,21 +98,97 @@ systemThemeQuery.addEventListener('change', () => {
 });
 
 const intro = document.querySelector<HTMLElement>('[data-intro-screen]');
-const introSeen = sessionStorage.getItem('portfolio-intro-seen') === 'true';
 
 if (intro) {
-  if (reducedMotion || introSeen) {
+  if (reducedMotion) {
     intro.remove();
   } else {
     body.classList.add('is-intro-active');
-    sessionStorage.setItem('portfolio-intro-seen', 'true');
+
+    const canvas = intro.querySelector<HTMLCanvasElement>('[data-intro-binary-canvas]');
+    const context = canvas?.getContext('2d');
+    let stopBinary = (): void => {};
+
+    if (canvas && context) {
+      let width = 0;
+      let height = 0;
+      let frame = 0;
+      let startedAt = -1;
+      let lastDraw = -Infinity;
+
+      const resizeBinary = (): void => {
+        const bounds = canvas.getBoundingClientRect();
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+
+        width = Math.max(1, Math.round(bounds.width));
+        height = Math.max(1, Math.round(bounds.height));
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        context.textAlign = 'center';
+        context.textBaseline = 'top';
+        context.font = `700 ${width < 600 ? 12 : 13}px monospace`;
+      };
+
+      const animateBinary = (timestamp: number): void => {
+        if (timestamp - lastDraw < 30) {
+          frame = window.requestAnimationFrame(animateBinary);
+          return;
+        }
+        lastDraw = timestamp;
+        if (startedAt < 0) startedAt = timestamp;
+
+        const columnWidth = width < 600 ? 21 : 29;
+        const rowHeight = width < 600 ? 17 : 19;
+        const columns = Math.ceil(width / columnWidth);
+        const rows = Math.ceil(height / rowHeight) + 1;
+        const seconds = (timestamp - startedAt) / 1000;
+
+        context.clearRect(0, 0, width, height);
+
+        for (let column = 0; column < columns; column += 1) {
+          const distance = seconds * (135 + (column * 29) % 110);
+          const steps = Math.floor(distance / rowHeight);
+          const offset = distance - steps * rowHeight;
+
+          context.fillStyle = column % 7 === 0
+            ? 'rgba(181, 158, 255, 0.73)'
+            : 'rgba(158, 255, 203, 0.75)';
+
+          for (let row = -1; row <= rows; row += 1) {
+            const worldRow = row - steps;
+            let hash = Math.imul(column + 17, 73856093) ^
+              Math.imul(worldRow + 301, 19349663);
+            hash ^= hash >>> 13;
+            context.fillText(
+              (hash & 1) === 0 ? '0' : '1',
+              (column + 0.5) * columnWidth,
+              row * rowHeight + offset
+            );
+          }
+        }
+
+        frame = window.requestAnimationFrame(animateBinary);
+      };
+
+      resizeBinary();
+      window.addEventListener('resize', resizeBinary, { passive: true });
+      frame = window.requestAnimationFrame(animateBinary);
+      stopBinary = (): void => {
+        window.cancelAnimationFrame(frame);
+        window.removeEventListener('resize', resizeBinary);
+      };
+    }
 
     window.setTimeout(() => {
       intro.classList.add('is-leaving');
       body.classList.remove('is-intro-active');
     }, 2500);
 
-    window.setTimeout(() => intro.remove(), 3300);
+    window.setTimeout(() => {
+      stopBinary();
+      intro.remove();
+    }, 3300);
   }
 }
 
@@ -124,6 +201,7 @@ const updateHeader = (): void => {
 
   if (!heroShell) {
     header.classList.remove('is-over-hero');
+    rail?.classList.remove('is-over-hero');
     return;
   }
 
@@ -131,6 +209,7 @@ const updateHeader = (): void => {
   const headerHeight = header.offsetHeight;
 
   header.classList.toggle('is-over-hero', heroBottom > headerHeight);
+  rail?.classList.toggle('is-over-hero', heroBottom > window.innerHeight * 0.5);
 };
 
 updateHeader();
@@ -283,6 +362,23 @@ const closeDialog = (dialog: HTMLDialogElement): void => {
   syncDialogScrollLock();
 };
 
+let lightboxCloseTimer: number | undefined;
+
+const closeLightbox = (): void => {
+  if (!lightbox?.open || lightbox.classList.contains('is-closing')) {
+    return;
+  }
+
+  if (reducedMotion) {
+    closeDialog(lightbox);
+    return;
+  }
+
+  lightbox.classList.remove('is-open');
+  lightbox.classList.add('is-closing');
+  lightboxCloseTimer = window.setTimeout(() => closeDialog(lightbox), 180);
+};
+
 document
   .querySelectorAll<HTMLButtonElement>('[data-gallery-open]')
   .forEach((button) => {
@@ -311,15 +407,34 @@ document
 
 document.querySelectorAll<HTMLDialogElement>('dialog').forEach((dialog) => {
   dialog.addEventListener('click', (event) => {
-    if (event.target === dialog) {
+    if (dialog === lightbox) {
+      closeLightbox();
+    } else if (event.target === dialog) {
       closeDialog(dialog);
     }
   });
 
-  dialog.addEventListener('close', syncDialogScrollLock);
-  dialog.addEventListener('cancel', () =>
-    window.setTimeout(syncDialogScrollLock)
-  );
+  dialog.addEventListener('close', () => {
+    if (dialog === lightbox) {
+      window.clearTimeout(lightboxCloseTimer);
+      lightboxCloseTimer = undefined;
+      lightbox.classList.remove('is-open', 'is-closing');
+      lightboxImage?.removeAttribute('src');
+      if (lightboxImage) {
+        lightboxImage.alt = '';
+      }
+    }
+    syncDialogScrollLock();
+  });
+
+  dialog.addEventListener('cancel', (event) => {
+    if (dialog === lightbox) {
+      event.preventDefault();
+      closeLightbox();
+    } else {
+      window.setTimeout(syncDialogScrollLock);
+    }
+  });
 });
 
 const openLightbox = (button: HTMLElement): void => {
@@ -338,24 +453,23 @@ const openLightbox = (button: HTMLElement): void => {
   }
 
   lightbox.classList.toggle('is-mobile-image', imageKind === 'mobile');
+  lightbox.classList.toggle('is-system-ui-cropped', button.dataset.systemUiCrop === 'true');
+  lightbox.classList.remove('is-closing', 'is-open');
   lightboxImage.src = source;
   lightboxImage.alt = alt;
 
   openDialog(lightbox);
+  window.requestAnimationFrame(() => {
+    if (lightbox.open) {
+      lightbox.classList.add('is-open');
+    }
+  });
 };
 
 document
   .querySelectorAll<HTMLElement>('[data-lightbox-open]')
   .forEach((button) => {
     button.addEventListener('click', () => openLightbox(button));
-  });
-
-document
-  .querySelector<HTMLButtonElement>('[data-lightbox-close]')
-  ?.addEventListener('click', () => {
-    if (lightbox) {
-      closeDialog(lightbox);
-    }
   });
 
 const canTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -376,7 +490,6 @@ if (canTilt && !reducedMotion) {
   });
 }
 
-const rail = document.querySelector<HTMLElement>('[data-section-rail]');
 const railHandle = document.querySelector<HTMLButtonElement>(
   '[data-section-rail-handle]'
 );

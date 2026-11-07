@@ -15,20 +15,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const featuredProjects = projects.filter((project) => project.featured);
 const otherProjects = projects.filter((project) => !project.featured);
 
-const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
-  const duration = 18 + (laneIndex % 7) * 0.9;
-
-  const text = Array.from({ length: 190 }, (_, rowIndex) =>
-    (laneIndex * 7 + rowIndex * 11 + laneIndex * rowIndex) % 5 < 2 ? '1' : '0'
-  ).join('');
-
-  return Array.from({ length: 3 }, (_, streamIndex) => ({
-    text,
-    x: 1.5 + laneIndex * (97 / 41),
-    delay: -(duration * ((streamIndex / 3 + laneIndex * 0.071) % 1)),
-    duration,
-  }));
-}).flat();
 ---
 
 <BaseLayout
@@ -38,18 +24,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
   <div class="intro-screen" data-intro-screen aria-hidden="true">
     <div class="intro-screen__grid"></div>
 
-    <div class="intro-screen__binary">
-      {
-        binaryStreams.map((stream, index) => (
-          <span
-            style={`--binary-x:${stream.x}%;--binary-delay:${stream.delay}s;--binary-duration:${stream.duration}s;`}
-            data-stream={index}
-          >
-            {stream.text.split('').join('\n')}
-          </span>
-        ))
-      }
-    </div>
+    <canvas class="intro-screen__binary" data-intro-binary-canvas></canvas>
 
     <div class="intro-screen__content">
       <span>Portfolio</span>
@@ -443,16 +418,7 @@ const binaryStreams = Array.from({ length: 42 }, (_, laneIndex) => {
       </div>
     </footer>
 
-    <dialog class="lightbox" data-lightbox-dialog>
-      <button
-        aria-label="Close enlarged image"
-        class="icon-button lightbox__close"
-        data-lightbox-close
-        type="button"
-      >
-        <Icon name="close" size={24} />
-      </button>
-
+    <dialog class="lightbox" aria-label="Enlarged project screenshot" data-lightbox-dialog>
       <div class="lightbox__stage">
         <div class="lightbox__media">
           <img alt="" data-lightbox-image src="" />

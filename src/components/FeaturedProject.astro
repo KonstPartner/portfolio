@@ -11,6 +11,9 @@ type Props = {
 
 const { project, index } = Astro.props;
 const previewImages = project.images.slice(1, 4);
+const needsSystemUiCrop = (image: Project['images'][number]): boolean =>
+  project.id === 'd-one' ||
+  (project.id === 'localize' && image.light.endsWith('.jpg'));
 ---
 
 <article
@@ -56,16 +59,23 @@ const previewImages = project.images.slice(1, 4);
       </span>
 
       <button
-        aria-label={`Open ${project.title} screenshot gallery`}
+        aria-label={`Enlarge ${project.title} screenshot`}
         class="visual-frame__main"
-        data-gallery-open={project.id}
+        data-dark-src={project.images[0].dark}
+        data-light-src={project.images[0].light}
+        data-lightbox-alt={project.images[0].alt}
+        data-image-kind={project.mobileGallery ? 'mobile' : 'desktop'}
+        data-system-ui-crop={needsSystemUiCrop(project.images[0]) ? 'true' : undefined}
+        data-lightbox-open
         type="button"
       >
-        <ThemeImage
-          className="visual-frame__image"
-          eager={index === 0}
-          image={project.images[0]}
-        />
+        <span class:list={['screen-crop', !needsSystemUiCrop(project.images[0]) && 'screen-crop--none']}>
+          <ThemeImage
+            className="visual-frame__image"
+            eager={index === 0}
+            image={project.images[0]}
+          />
+        </span>
       </button>
 
       {
@@ -79,10 +89,13 @@ const previewImages = project.images.slice(1, 4);
                 data-light-src={image.light}
                 data-lightbox-alt={image.alt}
                 data-image-kind={project.mobileGallery ? 'mobile' : 'desktop'}
+                data-system-ui-crop={needsSystemUiCrop(image) ? 'true' : undefined}
                 data-lightbox-open
                 type="button"
               >
-                <ThemeImage image={image} />
+                <span class:list={['screen-crop', !needsSystemUiCrop(image) && 'screen-crop--none']}>
+                  <ThemeImage image={image} />
+                </span>
               </button>
             ))}
           </div>
@@ -132,10 +145,13 @@ const previewImages = project.images.slice(1, 4);
               data-light-src={image.light}
               data-lightbox-alt={image.alt}
               data-image-kind={project.mobileGallery ? 'mobile' : 'desktop'}
+              data-system-ui-crop={needsSystemUiCrop(image) ? 'true' : undefined}
               data-lightbox-open
               type="button"
             >
-              <ThemeImage image={image} />
+              <span class:list={['screen-crop', !needsSystemUiCrop(image) && 'screen-crop--none']}>
+                <ThemeImage image={image} />
+              </span>
             </button>
           ))
         }

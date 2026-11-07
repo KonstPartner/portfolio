@@ -44,6 +44,16 @@ const createNumberedThemeAssets = (
     );
   });
 
+const createLocalizeAsset = (
+  filename: string,
+  alt: string,
+  extension: '.jpg' | '.png' = '.jpg'
+): ThemeAsset => ({
+  light: publicAsset(`images/projects/localize/${filename}--light${extension}`),
+  dark: publicAsset(`images/projects/localize/${filename}--dark${extension}`),
+  alt,
+});
+
 export const ASSETS = {
   favicon: publicAsset('favicon.svg'),
 
@@ -65,12 +75,32 @@ export const ASSETS = {
 } as const;
 
 export const PROJECT_IMAGES = {
-  localize: createNumberedThemeAssets(
-    'localize',
-    12,
-    '.app.jpg',
-    'Localize mobile application screen'
-  ),
+  localize: [
+    {
+      light: publicAsset('images/projects/localize/business-welcome.jpg'),
+      dark: publicAsset('images/projects/localize/business-welcome.jpg'),
+      alt: 'Localize business welcome',
+    },
+    createLocalizeAsset('customer-discovery', 'Localize discovery and current offers'),
+    createLocalizeAsset('business-restaurant-profile', 'Localize restaurant profile overview'),
+    createLocalizeAsset('business-restaurant-offers', 'Localize restaurant details and offers'),
+    createLocalizeAsset('business-upcoming-appointments', 'Localize upcoming appointments'),
+    createLocalizeAsset('business-pending-appointments', 'Localize pending appointment requests'),
+    createLocalizeAsset('business-appointments-agenda', 'Localize appointment agenda'),
+    createLocalizeAsset('customer-pending-appointment', 'Localize customer appointment details'),
+    createLocalizeAsset('business-appointment-decline-reason', 'Localize appointment decline reason'),
+    createLocalizeAsset('business-declined-appointment', 'Localize declined appointment details'),
+    createLocalizeAsset('customer-appointment-check-in-qr', 'Localize guest appointment QR code'),
+    createLocalizeAsset('business-appointment-qr-scanner', 'Localize QR check-in scanner'),
+    createLocalizeAsset('business-checked-in-appointments', 'Localize checked-in appointments'),
+    createLocalizeAsset('business-bonus-qr', 'Localize loyalty bonus QR actions'),
+    createLocalizeAsset('business-give-stamp-qr', 'Localize QR for issuing loyalty stamps'),
+    createLocalizeAsset('customer-stamp-added', 'Localize loyalty stamp confirmation'),
+    createLocalizeAsset('customer-profile', 'Localize customer profile'),
+    createLocalizeAsset('customer-wallet-stamps', 'Localize loyalty wallet and stamps'),
+    createLocalizeAsset('customer-login', 'Localize customer sign-in'),
+    createLocalizeAsset('business-customer-reviews', 'Localize customer reviews'),
+  ],
 
   dOne: createNumberedThemeAssets(
     'd-one',
